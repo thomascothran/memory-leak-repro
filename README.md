@@ -1,14 +1,10 @@
 # Memory Leak Repro
 
-To reproduce, start the server with `thomascothran.reitit-repro.core/start-server`.
+To reproduce, run `clojure -A:dev` and then call `user/go` from a repl. This starts a server on port 9000.
 
-There are two endpoints: '/test' and '/test2'. The former uses Reitit's default json serialization, the second uses `clojure.data.json` to convert the map to a string. They serve the same payload.
-
-Using `wrk` to hit the endpoints, you should see memory usage with the `test` endpoint increase until it runs out of memory. E.g.,
+Using `wrk` to hit the server, you should see memory usage increase until the server runs out of memory. E.g.,
 
 ```
-wrk -t4 -c50 -d10m -R80 --latency http://localhost:9000/test
+wrk -t4 -c50 -d10m -R80 --latency http://localhost:9000
 ```
-
-The `/test2` endpoint, by contrast, does not run out of memory.
 
